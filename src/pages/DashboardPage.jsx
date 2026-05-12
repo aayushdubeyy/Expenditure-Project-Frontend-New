@@ -21,6 +21,7 @@ import { useExpenseExplorer } from '../hooks/useExpenseExplorer.js'
 import { useExpenseForm } from '../hooks/useExpenseForm.js'
 import { useFinancialDashboard } from '../hooks/useFinancialDashboard.js'
 import { useIncomeManager } from '../hooks/useIncomeManager.js'
+import { useHeroMonthlyInsights } from '../hooks/useHeroMonthlyInsights.js'
 import { useMonthlySummary } from '../hooks/useMonthlySummary.js'
 import { usePayCreditCardForm } from '../hooks/usePayCreditCardForm.js'
 import { useYearlySummary } from '../hooks/useYearlySummary.js'
@@ -47,6 +48,7 @@ export function DashboardPage() {
   const financial_dashboard_data = useFinancialDashboard()
   const credit_insights_data = useCreditInsights()
   const income_manager_data = useIncomeManager()
+  const hero_monthly_data = useHeroMonthlyInsights()
   const alerts_data = useAlerts()
   const monthly_summary_data = useMonthlySummary()
   const yearly_summary_data = useYearlySummary()
@@ -55,7 +57,7 @@ export function DashboardPage() {
   const credit_card_form_data = useCreditCardForm(credit_data.refreshCreditData)
   const pay_card_form_data = usePayCreditCardForm(credit_data.refreshCreditData)
   return (
-    <DashboardShell>
+    <DashboardShell hero_monthly_data={hero_monthly_data}>
       <article className='dashboard_card'>
         <h2>Northstar dashboard</h2>
         <p className='dashboard_card_subtitle'>
