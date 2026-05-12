@@ -7,7 +7,7 @@ import { create_expense_mutation } from '../graphql/mutations/expenseMutations.j
 import { executeGraphqlRequest } from './apiClient.js'
 
 export async function createExpense(form_values) {
-  const variables = buildExpenseVariables(form_values)
+  const variables = { input: buildExpenseInput(form_values) }
   const data = await executeGraphqlRequest(create_expense_mutation, variables)
   return data?.createExpense
 }
@@ -15,7 +15,7 @@ export async function createExpense(form_values) {
 export async function getExpense(filter_values) {
   const variables = { filter: buildExpenseFilter(filter_values) }
   const data = await executeGraphqlRequest(get_expense_query, variables)
-  return data?.getExpense || []
+  return data?.getExpenses || []
 }
 
 export async function getMonthlySummary(month, year) {
@@ -30,13 +30,13 @@ export async function getYearlySummary(year) {
   return data?.yearlySummary || {}
 }
 
-function buildExpenseVariables(form_values) {
+function buildExpenseInput(form_values) {
   return {
     title: form_values.title.trim(),
     amount: parseFloat(form_values.amount),
     categoryId: form_values.categoryId,
     paymentMethodId: parseInt(form_values.paymentMethodId, 10),
-    creditcardId: getCreditCardId(form_values),
+    creditCardId: getCreditCardId(form_values),
     date: form_values.date,
     notes: getOptionalNotes(form_values.notes),
   }

@@ -17,5 +17,5 @@ export const create_credit_card_mutation =
   ') { id } }'
 
 export const pay_credit_card_mutation =
-  'mutation PayCreditCard($creditCardId: UUID!, $amount: Float!, $date: Date!) {' +
-  ' payCreditCard(creditCardId: $creditCardId, amount: $amount, date: $date) { id } }'
+  'mutation PayCreditCard($creditCardId: ID!, $amount: Float!, $date: String!) {' +
+  ' payCreditCard(creditCardId: $creditCardId, amount: $amount, date: $date) }'

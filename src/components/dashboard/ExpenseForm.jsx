@@ -3,7 +3,15 @@ export function ExpenseForm(props) {
 }
 
 function ExpenseFormBody(props) {
-  const { form_values, category_list, payment_methods, is_category_loading, onChange } = props
+  const {
+    form_values,
+    category_list,
+    credit_card_list,
+    payment_methods,
+    is_category_loading,
+    is_credit_card_loading,
+    onChange,
+  } = props
   const primary_fields = buildPrimaryFields(
     form_values,
     category_list,
@@ -15,7 +23,13 @@ function ExpenseFormBody(props) {
     <form className='expense_form' onSubmit={props.onSubmit}>
       <div className='expense_field_grid'>{primary_fields}</div>
       <TextAreaField name='notes' label='Notes (optional)' value={form_values.notes} onChange={onChange} />
-      {renderCardField(props.is_credit_card_mode, form_values.creditcardId, onChange)}
+      {renderCardField(
+        props.is_credit_card_mode,
+        form_values.creditcardId,
+        credit_card_list,
+        is_credit_card_loading,
+        onChange,
+      )}
       {renderMessages(props.error_message, props.success_message)}
       <SubmitButton is_loading={props.is_loading} />
     </form>
@@ -97,14 +111,19 @@ function renderDateField(date, onChange) {
   )
 }
 
-function renderCardField(is_credit_card_mode, creditcardId, onChange) {
+function renderCardField(
+  is_credit_card_mode,
+  creditcardId,
+  credit_card_list,
+  is_credit_card_loading,
+  onChange,
+) {
   if (!is_credit_card_mode) return null
   return (
-    <InputField
-      name='creditcardId'
-      label='Credit card id'
-      placeholder='3fa85f64-5717-4562-b3fc-2c963f66afa6'
-      value={creditcardId}
+    <CreditCardField
+      creditcardId={creditcardId}
+      credit_card_list={credit_card_list}
+      is_credit_card_loading={is_credit_card_loading}
       onChange={onChange}
     />
   )
@@ -183,6 +202,28 @@ function PaymentField({ payment_methods, paymentMethodId, onChange }) {
         {payment_methods.map((payment_method) => (
           <option key={payment_method.id} value={payment_method.id}>
             {payment_method.name}
+          </option>
+        ))}
+      </select>
+    </label>
+  )
+}
+
+function CreditCardField({ creditcardId, credit_card_list, is_credit_card_loading, onChange }) {
+  return (
+    <label className='expense_field'>
+      <span>Credit card</span>
+      <select
+        name='creditcardId'
+        value={creditcardId}
+        onChange={onChange}
+        required
+        disabled={is_credit_card_loading}
+      >
+        <option value=''>{is_credit_card_loading ? 'Loading credit cards...' : 'Choose credit card'}</option>
+        {credit_card_list.map((card_data) => (
+          <option key={card_data.id} value={card_data.id}>
+            {card_data.name}
           </option>
         ))}
       </select>

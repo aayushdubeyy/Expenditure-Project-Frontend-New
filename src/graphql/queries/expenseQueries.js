@@ -1,6 +1,6 @@
 export const get_expense_query =
   'query GetExpense($filter: ExpenseFilterInput) {' +
-  ' getExpense(filter: $filter) {' +
+  ' getExpenses(filter: $filter) {' +
   ' id title amount date notes categoryId paymentMethodId creditCardId' +
   ' } }'
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { payment_methods } from '../constants/paymentMethods.js'
 import { getCategories } from '../services/categoryService.js'
+import { getCreditCards } from '../services/creditService.js'
 import { getExpense } from '../services/expenseService.js'
 import { validateExpenseSearchFilters } from '../utils/validators.js'
 
@@ -14,12 +15,16 @@ const initial_filter_values = {
 export function useExpenseExplorer() {
   const [filter_values, set_filter_values] = useState(initial_filter_values)
   const [category_list, set_category_list] = useState([])
+  const [credit_card_list, set_credit_card_list] = useState([])
   const [expense_list, set_expense_list] = useState([])
   const [error_message, set_error_message] = useState('')
   const [is_loading, set_is_loading] = useState(false)
 
   useEffect(() => {
     loadCategories(set_category_list, set_error_message)
+  }, [])
+  useEffect(() => {
+    loadCreditCards(set_credit_card_list, set_error_message)
   }, [])
 
   async function onSearch(event) {
@@ -46,6 +51,7 @@ export function useExpenseExplorer() {
   return {
     filter_values,
     category_list,
+    credit_card_list,
     payment_methods,
     expense_list,
     error_message,
@@ -63,6 +69,15 @@ async function loadCategories(set_category_list, set_error_message) {
     set_category_list(categories)
   } catch (error) {
     set_error_message(error.message || 'Unable to load categories.')
+  }
+}
+
+async function loadCreditCards(set_credit_card_list, set_error_message) {
+  try {
+    const credit_cards = await getCreditCards()
+    set_credit_card_list(credit_cards)
+  } catch (error) {
+    set_error_message(error.message || 'Unable to load credit cards.')
   }
 }
 

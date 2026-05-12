@@ -20,7 +20,7 @@ export function validateExpenseFields(form_values) {
   if (!form_values.categoryId) return 'Please choose a category.'
   if (!form_values.paymentMethodId) return 'Please choose a payment method.'
   if (!form_values.date) return 'Please select a date.'
-  if (isCreditCardMissing(form_values)) return 'Credit card id is required for card payments.'
+  if (isCreditCardMissing(form_values)) return 'Please choose a credit card for card payments.'
   return ''
 }
 
